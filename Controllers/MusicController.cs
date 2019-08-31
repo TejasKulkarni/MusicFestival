@@ -20,6 +20,8 @@ namespace Music.World.WebAPI.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get()
         {
             try

@@ -6,7 +6,6 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Music.World.Service
@@ -23,7 +22,7 @@ namespace Music.World.Service
 
         public async Task<string> GetMusicDetails()
         {
-            ProxyService proxy = new ProxyService(_config["Settings:BaseUrl"]);
+            var proxy = new ProxyService(_config["Settings:BaseUrl"]);
             var response = proxy.Get("api/v1/festivals");
 
             if (!response.IsSuccessStatusCode)
@@ -31,77 +30,66 @@ namespace Music.World.Service
                 var asyncResult = response.Content.ReadAsStringAsync().Result;
 
                 Log.Error("MusicService, StatusCode: {0}, Description: {1}, Result: {2}", response.StatusCode, response.ReasonPhrase, asyncResult);
-                throw new HttpRequestException("Error occured" + asyncResult);
+                throw new Exception("Error occured due to " + asyncResult);
             }
 
             var result = await response.Content.ReadAsStringAsync();
 
-            return MapToRecordDetails(result);
+            return RetrieveRecordDetailsDto(result);
         }
 
-        private string MapToRecordDetails(string musicDetails)
+        private static string RetrieveRecordDetailsDto(string musicDetails)
         {
-            if (!string.IsNullOrWhiteSpace(musicDetails))
+            var musicDetailsDTO = JsonConvert.DeserializeObject<List<MusicDetailsDTO>>(musicDetails);
+
+            if (musicDetailsDTO == null)
+                return null;
+
+            var recordDetailsDtoList = new List<RecordDetailsDTO>();
+
+            foreach (var item in musicDetailsDTO)
             {
-                var musicDetailsDTO = JsonConvert.DeserializeObject<List<MusicDetailsDTO>>(musicDetails);
-
-                var recordDetailsDtoList = new List<RecordDetailsDTO>();
-
-                foreach (var item in musicDetailsDTO)
+                foreach (var band in item.Bands)
                 {
-                    foreach (var band in item.Bands)
+                    var festivalName = string.IsNullOrWhiteSpace(item.Name) ? "Blank" : item.Name;
+                    var recordLabel = string.IsNullOrWhiteSpace(band.RecordLabel) ? "Blank" : band.RecordLabel;
+                    var bandName = string.IsNullOrWhiteSpace(band.Name) ? "Blank" : band.Name;
+
+                    var recordDetailsDto = recordDetailsDtoList.FirstOrDefault(r => r.RecordName.Contains(recordLabel));
+
+                    if (recordDetailsDto == null)
                     {
-                        var festivalName = string.IsNullOrWhiteSpace(item.Name) ? "Blank" : item.Name;
-                        var recordLabel = string.IsNullOrWhiteSpace(band.RecordLabel) ? "Blank" : band.RecordLabel;
-                        var bandName = string.IsNullOrWhiteSpace(band.Name) ? "Blank" : band.Name;
-
-                        try
+                        recordDetailsDtoList.Add(new RecordDetailsDTO
                         {
-                            var recordDetailsDto = recordDetailsDtoList.FirstOrDefault(r => r.RecordName.Contains(recordLabel));
-
-                            if (recordDetailsDto == null)
+                            RecordName = recordLabel,
+                            Bands = new List<Band>
                             {
-                                recordDetailsDtoList.Add(new RecordDetailsDTO
+                                new Band
                                 {
-                                    RecordName = recordLabel,
-                                    Bands = new List<Band>
-                                            {
-                                                new Band
-                                                {
-                                                    Name = bandName,
-                                                    Festivals = new List<string> { festivalName }
-                                                }
-                                            }
-                                });
-                            }
-                            else
-                            {
-                                var bandDetails = recordDetailsDto.Bands.FirstOrDefault(b => b.Name == bandName);
-
-                                if (bandDetails == null)
-                                {
-                                    recordDetailsDto.Bands.Add(new Band { Name = bandName, Festivals = new List<string> { festivalName } });
-                                }
-                                else
-                                {
-                                    bandDetails.Festivals.Add(festivalName);
+                                    Name = bandName,
+                                    Festivals = new List<string> { festivalName }
                                 }
                             }
+                        });
+                    }
+                    else
+                    {
+                        var bandDetails = recordDetailsDto.Bands.FirstOrDefault(b => b.Name == bandName);
+
+                        if (bandDetails == null)
+                        {
+                            recordDetailsDto.Bands.Add(new Band { Name = bandName, Festivals = new List<string> { festivalName } });
                         }
-
-
-                        catch (Exception ex)
+                        else
                         {
-                            var a = ex.Message;
-                            throw ex;
+                            bandDetails.Festivals.Add(festivalName);
                         }
                     }
                 }
-
-                return JsonConvert.SerializeObject(recordDetailsDtoList);
             }
 
-            return null;
+            return JsonConvert.SerializeObject(recordDetailsDtoList);
+
         }
     }
 }
