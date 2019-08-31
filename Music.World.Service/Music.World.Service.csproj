@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <generateassemblyconfigurationattribute>false</generateassemblyconfigurationattribute>
+    <generateassemblydescriptionattribute>false</generateassemblydescriptionattribute>
+    <generateassemblyproductattribute>false</generateassemblyproductattribute>
+    <generateassemblytitleattribute>false</generateassemblytitleattribute>
+    <generateassemblycompanyattribute>false</generateassemblycompanyattribute>
+    <generateassemblyfileversionattribute>false</generateassemblyfileversionattribute>
+    <generateassemblyinformationalversionattribute>false</generateassemblyinformationalversionattribute>
+    <generateassemblyversionattribute>false</generateassemblyversionattribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Music.World.Common\Music.World.Common.csproj" />
+    <ProjectReference Include="..\Music.World.DTO\Music.World.DTO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

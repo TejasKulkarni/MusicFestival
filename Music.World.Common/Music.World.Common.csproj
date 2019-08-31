@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <generateassemblyconfigurationattribute>false</generateassemblyconfigurationattribute>
+    <generateassemblydescriptionattribute>false</generateassemblydescriptionattribute>
+    <generateassemblyproductattribute>false</generateassemblyproductattribute>
+    <generateassemblytitleattribute>false</generateassemblytitleattribute>
+    <generateassemblycompanyattribute>false</generateassemblycompanyattribute>
+    <generateassemblyfileversionattribute>false</generateassemblyfileversionattribute>
+    <generateassemblyinformationalversionattribute>false</generateassemblyinformationalversionattribute>
+    <generateassemblyversionattribute>false</generateassemblyversionattribute>
+  </PropertyGroup>
+
+</Project>

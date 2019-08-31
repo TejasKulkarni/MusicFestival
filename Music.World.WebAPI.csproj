@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <generateassemblyconfigurationattribute>false</generateassemblyconfigurationattribute>
+    <generateassemblydescriptionattribute>false</generateassemblydescriptionattribute>
+    <generateassemblyproductattribute>false</generateassemblyproductattribute>
+    <generateassemblytitleattribute>false</generateassemblytitleattribute>
+    <generateassemblycompanyattribute>false</generateassemblycompanyattribute>
+    <generateassemblyfileversionattribute>false</generateassemblyfileversionattribute>
+    <generateassemblyinformationalversionattribute>false</generateassemblyinformationalversionattribute>
+    <generateassemblyversionattribute>false</generateassemblyversionattribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Music.World.Service\Music.World.Service.csproj" />
+  </ItemGroup>
+
+</Project>
